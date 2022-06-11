@@ -17,3 +17,6 @@ Required installed software:
 
 ## Installation
 1. `ansible-playbook install_rke2.yaml`
+
+## Cleanup
+1. `cd vagrant && vagrant destroy`
