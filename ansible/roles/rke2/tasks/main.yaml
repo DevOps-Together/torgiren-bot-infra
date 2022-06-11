@@ -1,0 +1,8 @@
+- name: Download binary & install
+  shell: curl -sfL https://get.rke2.io | sh -
+
+- name: Manage service
+  ansible.builtin.service:
+    name: rke2-server.service
+    enabled: yes
+    state: restarted

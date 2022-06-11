@@ -1,0 +1,5 @@
+---
+- hosts: rke2_master
+  roles:
+  - name: rke2
+    ansible_become: true
