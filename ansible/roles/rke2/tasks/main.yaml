@@ -1,8 +1,16 @@
+- name: Template config
+  template:
+    src: master_config.j2.yaml
+    dest: "{{ master_config_file }}"
+    mode: 0600
+    owner: root
+  notify: restart rke2 server service
+
 - name: Download binary & install
   shell: curl -sfL https://get.rke2.io | sh -
+  notify: restart rke2 server service
 
 - name: Manage service
   ansible.builtin.service:
     name: rke2-server.service
     enabled: yes
-    state: restarted
