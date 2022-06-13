@@ -5,6 +5,7 @@ Required installed software:
 * Python 3
 * vagrant 
 * Vagrant compatible virtualization engine, for example: VirtualBox
+* Create Virtualbox HostOnly network named `vboxnet1` with enabled dhcp
 ## Setup project locally
 ### Setup vm using vagrant
 1. `cd vagrant`
@@ -12,8 +13,9 @@ Required installed software:
 ### Setup ansible
 1. `cd ansible`
 1. (setup once) `python3 -m venv .ansible_env`
-1. . .ansible_env/bin/activate
+1. `. .ansible_env/bin/activate`
 1. (setup once) `pip3 install -r requirements.txt`
+1. (setup once) `ansible-galaxy install -r required_roles.yaml -p external_roles`
 
 ## Installation
 1. `ansible-playbook install_rke2.yaml`

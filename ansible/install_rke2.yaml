@@ -1,5 +1,27 @@
 ---
-- hosts: rke2_master
+- hosts: rke2:&masters
   roles:
-  - name: rke2
-    ansible_become: true
+  - role: 'external_roles/camaeel.install_packages'
+    ansible_become: True
+    unattended_upgrades_all: True
+    # add_packages_list:
+    # - vim
+    remove_packages_list:
+    - snapd
+    # sources_keys:
+    # - AJDSGFJSGDFJ765654
+    # sources_repos:
+    # - deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable     
+    tags:
+    - packages
+  - role: rke2
+    ansible_become: True
+    tags: rke2
+
+- hosts: rke2:&masters[0]
+  roles:
+  - name: rancher_kubeconfig
+    tags:
+    - kubeconfig
+    kube_config: '/etc/rancher/k3s/k3s.yaml'
+    when: generate_kubeconfig_file is defined and generate_kubeconfig_file == true

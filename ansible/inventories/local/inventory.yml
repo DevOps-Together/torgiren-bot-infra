@@ -1,0 +1,26 @@
+# plugin: community.general.virtualbox
+# running_only: True
+
+# groups:
+#   project_torgiren: "'-project_torgiren-' in (inventory_hostname)"
+#   devops_together: "'devops_together-' in (inventory_hostname)"
+# compose: 
+#   ansible_host: "adad"
+
+all:
+  # hosts:
+  #   master0:
+
+  children:
+    rke2:
+      children:
+        masters:
+          hosts:
+            master0:
+              ansible_host: 192.168.57.10
+        workers:
+
+  # vars:
+  #   generate_kubeconfig_file: True
+  #   ansible_user: vagrant
+  #   ansible_ssh_common_args: '-o StrictHostKeyChecking=no'

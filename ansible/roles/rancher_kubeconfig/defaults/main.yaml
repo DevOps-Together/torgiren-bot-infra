@@ -1,0 +1,9 @@
+post_install_message:
+- "Your cluster should be ready. Kubeconfig file has been placed under '~/.kube/rke2_kubeconfig.yml'."
+- "You can now set your KUBECONFIG to point to this file. (hint: KUBECONFIG can hold more than one file separated with colon)"
+- "Put 'export KUBECONFIG=\"$HOME/.kube/config:$HOME/.kube/rke2_kubeconfig.yml\"' into your ~/.bashrc"
+- "You can install ctx plugin with krew, and switch between contexts using: 'kubectl ctx'"
+
+kubeconfig_src_path: /etc/rancher/rke2/rke2.yaml
+kubeconfig_tgt_path: ~/.kube/rke2_kubeconfig.yml
+cluster_name: rke2

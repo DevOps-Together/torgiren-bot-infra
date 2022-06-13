@@ -1,0 +1,19 @@
+---
+- name: Get kubeconfig contents
+  slurp:
+    src: "{{ kubeconfig_src_path }}"
+  register: kubeconfig
+  become: True
+- set_fact:
+    kubeconfig: "{{ kubeconfig['content'] | b64decode | from_yaml }}"
+     
+- name: template local kubeconfig
+  local_action:
+    module: ansible.builtin.template
+    src: kubeconfig.j2.yaml
+    dest: "{{ kubeconfig_tgt_path }}"
+    mode: 0600
+
+- name: display post install message
+  debug: msg={{ post_install_message }}
+
