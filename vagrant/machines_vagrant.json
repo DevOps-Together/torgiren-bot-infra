@@ -1,0 +1,25 @@
+[
+	{
+		"name": "Centos8_server",
+		"hostname": "master",
+		"box": "generic/centos8",
+		"ram": "4096",
+		"vcpu": "1",
+		"type_net": "private_network",
+		"name_network": "vboxnet0",
+		"ip": "192.168.33.10",
+		"playbooks": ""
+	},
+
+	{
+		"name": "Centos8_worker",
+		"hostname": "worker1",
+		"box": "generic/centos8",
+		"ram": "4096",
+		"vcpu": "1",
+		"type_net": "private_network",
+		"name_network": "vboxnet0",
+		"ip": "192.168.33.11",
+		"playbooks": ""
+	}
+]
