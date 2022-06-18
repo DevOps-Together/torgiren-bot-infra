@@ -19,10 +19,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			if Vagrant.has_plugin?("vagrant-vbguest") then
 				config.vbguest.auto_update = false
 			end
-			#mav.vm.provision "ansible" do |ansible|
-			#	ansible.verbose = "v"
-			#	ansible.playbook = machines['playbooks']
-			#end
+			mav.vm.provision "ansible" do |ansible|
+				ansible.verbose = "v"
+				ansible.playbook = machines['playbooks']
+			end
 		end
 	end
 end

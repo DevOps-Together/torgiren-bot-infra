@@ -1,0 +1,34 @@
+---
+- name: copy rke2 repo
+  ansible.builtin.copy:
+    src: rancher-rke2-1-18-latest.repo
+    dest: "{{ yum_path }}"
+    mode: '0644'
+
+- name: install rke2-agent
+  yum: name=rke2-agent state=latest
+
+- name: Start service rke2-agent
+  ansible.builtin.systemd: 
+    name: rke2-agent
+    state: started
+  
+- name: Enable service rek2-server
+  ansible.builtin.systemd: 
+    name: rke2-agent
+    enabled: yes
+    masked: no
+
+#- name: copy kubectl to /usr/bin
+  #copy:
+    #src: "{{ kubectl_path }}"
+    #src: /etc/passwd
+      #remote_src: true
+      #dest: "/usr/bin/kubectl"
+      #dest: /etc/passwd.copy
+
+      #- name: Adding the path in the bashrc files
+      #lineinfile: dest="$HOME/.bashrc" line='export KUBECONFIG=/etc/rancher/rke2/rke2.yaml' state=present
+      #- name: Source the bashrc file
+      #shell: source "$HOME/.bashrc"
+

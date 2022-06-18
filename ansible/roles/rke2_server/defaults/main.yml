@@ -1,0 +1,6 @@
+---
+kubectl_path: "/var/lib/rancher/rke2/data/v1.18.20-rke2r1-8bc512ab9465/bin/kubectl"
+kubeconfig_path: "/etc/rancher/rke2/rek2.yaml" 
+token_location: "/var/lib/rancher/rke2/server/node-token"
+yum_path: "/etc/yum.repos.d"
+
