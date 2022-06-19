@@ -9,10 +9,8 @@ Requirements
 Role Variables
 --------------
 
-kubectl_path - location  kubectl   
-kubeconfig_path - location  kubeconfig 
-token_location - location  node token 
-yum_path - location repositories yum
+* kubeconfig_path - location  kubeconfig 
+* token_location - location  node token 
 
 Dependencies
 ------------

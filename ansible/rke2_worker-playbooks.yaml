@@ -3,4 +3,5 @@
 - hosts: Centos8_rk2_Worker 
   become: yes
   roles:
+   - rke2_common
    - rke2_worker

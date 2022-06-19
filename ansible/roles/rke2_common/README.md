@@ -1,21 +1,18 @@
 Role Name
 =========
 
-The role installs rke2_server on Centos8 systems
+The role adds rke2 repository 
 
 Requirements
 ------------
 
-
 Role Variables
 --------------
 
-* kubeconfig_path - location  kubeconfig
-* token_location - location  node token
+* yum_path - location repositories yum 
 
 Dependencies
 ------------
-
 
 Example Playbook
 ----------------
@@ -27,10 +24,10 @@ Example Playbook
 License
 -------
 
-GPL-2.0
+GPL 2.0
 
 Author Information
 ------------------
 
-https://github.com/goodbit22
 https://gitlab.com/goodbit22
+https://github.com/goodbit22

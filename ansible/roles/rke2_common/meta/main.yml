@@ -1,6 +1,6 @@
 galaxy_info:
   author: goodbit22
-  description: The role installs rke2_server on Centos8 systems
+  description: The role adds rke2 repository
   company: None
   license: GPL-2.0
   min_ansible_version: 2.1
@@ -8,5 +8,3 @@ galaxy_info:
     - name: Centos8
       versions:
         - 8
-  galaxy_tags: []
-  dependencies: []
