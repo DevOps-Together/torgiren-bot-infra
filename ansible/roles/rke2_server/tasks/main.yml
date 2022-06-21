@@ -1,0 +1,14 @@
+---
+- name: install rke2-server
+  yum: name=rke2-server state=latest
+
+- name: Start service rke2-server
+  ansible.builtin.systemd:
+    name: rke2-server
+    state: started
+
+- name: Enable service rek2-server
+  ansible.builtin.systemd:
+    name: rke2-server
+    enabled: true
+    masked: false

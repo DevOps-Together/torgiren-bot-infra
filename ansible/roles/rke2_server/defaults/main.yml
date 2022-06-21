@@ -1,0 +1,3 @@
+---
+kubeconfig_path: "/etc/rancher/rke2/rek2.yaml"
+token_location: "/var/lib/rancher/rke2/server/node-token"

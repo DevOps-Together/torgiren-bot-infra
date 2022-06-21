@@ -1,0 +1,7 @@
+---
+#install rke2-server playbook
+- hosts: Centos8_rk2_Server 
+  become: yes
+  roles:
+    - rke2_common
+    - rke2_server
