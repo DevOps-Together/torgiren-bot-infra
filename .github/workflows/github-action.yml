@@ -1,0 +1,24 @@
+---
+name: Ansbile Pipeline
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-22.04 
+    strategy:
+      matrix:
+         python-version: [3.9]
+    steps:
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r ./ansible/requirements.txt
+      - name: Ansible lint
+        run: |
+          ansbible-lint  ./ansible/roles/rke2_common
+          ansbible-lint  ./ansible/roles/rke2_server
+          ansbible-lint  ./ansible/roles/rke2_worker
+      - name: Test with Molecule
+        run: |
+          molecule test -d docker ./ansible/roles/rke2_common
+          molecule test -d docker ./ansible/roles/rke2_server
+          molecule test -d docker ./ansible/roles/rke2_worker

@@ -12,3 +12,26 @@
     name: rke2-server
     enabled: true
     masked: false
+
+- name: Node token rke2-server
+  ansible.builtin.slurp:
+    src: "{{ token_location }}"
+  register: node_token
+
+- name: print node_token
+  ansible.builtin.debug:
+    msg: "{{ node_token['content'] | b64decode }}"
+
+- name: Create file with node_server content
+  copy:
+    dest: "/home/vagrant/config.yaml"
+    mode: u+rw,g-wx,o-rwx
+    content: |
+      server: https://"{{ inventory_hostname }}":9345
+      token: {{ node_token['content'] | b64decode }}
+
+- name: Copy file on hosts
+  fetch:
+    src: "/home/vagrant/config.yaml"
+    dest: "./config.yaml"
+    flat: true
