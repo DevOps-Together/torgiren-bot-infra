@@ -7,7 +7,7 @@
     name: rke2-server
     state: started
 
-- name: Enable service rek2-server
+- name: Enable service rke2-server
   ansible.builtin.systemd:
     name: rke2-server
     enabled: true
