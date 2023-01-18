@@ -11,17 +11,25 @@ provider "libvirt" {
     uri = "qemu:///system"
 }
 
+resource "libvirt_pool" "test_pool" {
+  name = "test_pool"
+  type = "dir"
+  path = "/tmp/kvm_test"
+}
 
 resource "libvirt_volume" "master_disk" {
-    name = "Centos9_stream_master"
-    source = "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-20210830.0.x86_64.qcow2"
-   
+    name = "${var.name_disk}"
+    source = "${var.source_images}"
 }
 
 resource "libvirt_network" "network_machine" {
     name = "${var.name_interface}"
     mode = "${var.type_network}"
-    addresses = ["192.168.0.120/24"]
+    addresses = ["${var.ip_address}"]
+    dhcp {
+      enabled = false
+    }
+    count = var.skip_network == "false" ? 0 : 1
 }
 
 resource "libvirt_cloudinit_disk" "common_init" {
@@ -30,12 +38,23 @@ resource "libvirt_cloudinit_disk" "common_init" {
 }
 
 data "template_file" "user_data" {
-    template = file("cloud_init.cfg")
+    template = file("${path.module}/cloud_init.cfg")
+    vars = {
+        username = var.username
+        hostname = var.hostname
+        shell = var.shell
+    }
 }
+
+
+
 
 resource "libvirt_domain" "default" {
     name = var.name
-    description = "Wstepna vm dla kvm"
+    #description = "Wstepna vm dla kvm"
+    network_interface {
+       network_id = "default"
+    }
     cpu {
         mode = "host-passthrough"
     }
@@ -46,6 +65,9 @@ resource "libvirt_domain" "default" {
         volume_id = libvirt_volume.master_disk.id
         scsi = "true"
     }
-    cloudinit = libvirt_cloudinit_disk.common_init.id
+    cloudinit = "${libvirt_cloudinit_disk.common_init.id}"
 }
 
+# output "ip" {
+#   value = "${libvirt_domain.default.network_interface.0.addresses.0}"
+# }
