@@ -1,3 +1,9 @@
+variable "libvirt_uri"{
+  description = "Libvirt Uri"
+  type = string
+  default  = "qemu:///system"
+}
+
 variable "type_network" {
   description = "Type of network"
   type = string 

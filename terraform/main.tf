@@ -8,13 +8,7 @@ terraform {
 }
 
 provider "libvirt" {
-    uri = "qemu:///system"
-}
-
-resource "libvirt_pool" "test_pool" {
-  name = "test_pool"
-  type = "dir"
-  path = "/tmp/kvm_test"
+    uri = "${var.libvirt_uri}"
 }
 
 resource "libvirt_volume" "master_disk" {
