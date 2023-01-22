@@ -59,8 +59,8 @@ variable "source_images" {
 }
 
 variable "skip_network"{
-  type = number
-  default = 0
+  type = bool
+  default = true
 }
 
 # CLOUD INIT VARIABLES
