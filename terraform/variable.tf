@@ -4,24 +4,6 @@ variable "libvirt_uri"{
   default  = "qemu:///system"
 }
 
-variable "type_network" {
-  description = "Type of network"
-  type = string 
-  default = "route"
-}
-
-variable "name_interface" {
-  description = "Name interface"
-  type = string 
-  default = "good_net"
-}
-
-variable "ip_address" {
-  description = "ip address"
-  type = string
-  default = "192.168.0.120/24"
-}
-
 variable "name" {
   type = string 
   default = "goodbit22_vm"
@@ -55,29 +37,53 @@ variable "name_disk" {
 variable "source_images" {
   description = "url image"
   type = string
-  default = "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-20210830.0.x86_64.qcow2"
+  default = "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-20230116.0.x86_64.qcow2"
 }
 
-variable "skip_network"{
-  type = bool
-  default = true
-}
+
 
 # CLOUD INIT VARIABLES
 
-variable "username" { 
-  description = "username vm" 
+variable "username_password" { 
+  description = "login & password" 
   type = string
-  default = "goodbit22"
-}
-
-variable "hostname" {
-  description = "Hostname" 
-  type = string 
-  default = "goodbit_host" 
+  default = "goodbit:linux"
 }
 
 variable "shell" {
   type = string 
   default = "/bin/bash" 
+}
+
+variable "groups" {
+  description = "user groups"
+  type = string
+  default = "wheel"
+}
+
+variable "ssh_keys" {
+  description = "SSH keys" 
+  type = string 
+  default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQClePKrWjz5n/0zF13gjx/10c2rv0Y4bHRiYkl7crHvqRZ9wcL429wcAACe+klUEogseavmMcAiOOqIcZJvj5wY9Ok630UU75LtCgbWCMosrWXxov7WLv46GAw9Pm5OVTXci99M6kgsoRhNOLPRbyvK6jATEPShVXj0putzOYnfWeGRLqahBYr7+gORoZ2lWaO8/CbyoJ/beaiGi0oGHMZZxbjgTo65omfMCYkf85Y5nnltGUT2HnSv10GaPoKJt41E70+G+AZAYK32BNEqJzS2kgrNee4XseGCyHOXZN0EXy3bQSFm0MyVaSa7hoqQFzvNf5bLpwHF5IYTmfGpXDKXRlq/v9FZ96mOmxZRUk5nPPPq6WoIX0GV8KzxtifMSwkS3xdQdgBz0QHpUSoZ/Css+udG80gEhZltZeE8f9wBmcSZGKjG6BfdR4dFyv74NQ2ttC8CB9JlAzUa2Z1DcngshFU2nOtuHrSwI58dzKCHY0d1qJdol3McWeWW1W7QV4k= goodbit22@goodbit22-82b"
+}
+
+variable "hostname" {
+  description = "Hostname" 
+  type = string 
+  default = "devops" 
+}
+
+
+# CLOUD INIT NETWORK VARIABLES
+
+variable "ip_address" {
+  description = "ip address"
+  type = string
+  default = "192.168.122.201/24"
+}
+
+variable "gateway" {
+  description = "gateway"
+  type = string
+  default = "192.168.122.1"
 }
