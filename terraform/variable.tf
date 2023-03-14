@@ -44,12 +44,6 @@ variable "source_images" {
 
 # CLOUD INIT VARIABLES
 
-variable "username_password" { 
-  description = "login & password" 
-  type = string
-  default = "goodbit:linux"
-}
-
 variable "shell" {
   type = string 
   default = "/bin/bash" 
@@ -86,4 +80,10 @@ variable "gateway" {
   description = "gateway"
   type = string
   default = "192.168.122.1"
+}
+
+variable "username" {
+  description = "default user username"
+  type = string
+  default = "admin"
 }

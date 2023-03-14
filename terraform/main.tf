@@ -21,11 +21,11 @@ resource "libvirt_volume" "master_disk" {
 data "template_file" "user_data" {
     template = file("${path.module}/cloud_init.cfg")
     vars = {
-        username_password = var.username_password
         shell = var.shell
         ssh_keys = var.ssh_keys
         groups = var.groups
         hostname = var.hostname
+        username = var.username
     }
 }
 
