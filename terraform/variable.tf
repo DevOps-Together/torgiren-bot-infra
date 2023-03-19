@@ -31,13 +31,13 @@ variable "vm_cpu" {
 
 variable "name_disk" {
   type = string
-  default = "Centos9_stream_master"
+  default = "Centos8_stream_master"
 }
 
 variable "source_images" {
   description = "url image"
   type = string
-  default = "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-20230116.0.x86_64.qcow2"
+  default = "https://cloud.centos.org/centos/8-stream/x86_64/images/CentOS-Stream-GenericCloud-8-20230308.3.x86_64.qcow2"
 }
 
 
