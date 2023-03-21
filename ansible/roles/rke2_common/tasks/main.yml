@@ -1,6 +1,6 @@
 ---
 - name: copy rke2 repo
   ansible.builtin.copy:
-    src: rancher-rke2-1-18-latest.repo
+    src: rancher-rke2-1-25-latest.repo
     dest: "{{ yum_path }}"
     mode: '0644'
