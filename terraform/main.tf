@@ -13,8 +13,8 @@ provider "libvirt" {
 
 resource "libvirt_volume" "master_disk" {
     name = "${var.name_disk}"
-    source = "${var.source_images}"
-    #base_volume_name = "CentOS-Stream-GenericCloud-9-20230116.0.x86_64.qcow2"
+    source = var.base_volume_name == null ? var.source_images : null
+    base_volume_name = var.base_volume_name != null ? var.base_volume_name : null
     format = "qcow2"
 }
 
