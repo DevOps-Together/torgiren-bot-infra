@@ -1,0 +1,50 @@
+name: CI
+on: 
+  push:
+    #    branches: [ master ]
+jobs:
+  pre:
+    runs_on: ubuntu-latest 
+    env:
+      python_version: '3.8'
+    steps:
+      - name: install python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '${{python_version}}'
+      - name: install dependencies
+        run: |
+          if [ -f ansible/requirements.txt ]; then  pip -r ansible/requirements.txt
+          if [ -f terraform/requirements.txt ]; then pip -r terraform/requirements.txt
+      - name: install tflint and tfsec
+        uses: | 
+          terraform-linters/setup-tflint@v1
+          aquasecurity/setup-tfsec@v1
+          #- name: install tflint
+          #uses: terraform-linters/setup-tflint@v1
+          #- name: install tfsec
+          #uses: aquasecurity/setup-tfsec@v1
+  lint:
+    runs_on: ubuntu-latest 
+    needs: [pre]
+    steps:
+      - name: Static analyse Ansible
+        continue-on-error: true
+        run: ansible lint ansible/ 
+      - name: Static analyse Terraform 
+        continue-on-error: true
+        run: tflint terraform/
+  scan_secure:
+    runs_on: ubuntu-latest 
+    needs: [pre]
+    steps:
+      - name: Vulnerability scan with checkov
+        continue-on-error: true
+        run: checkov --soft-fail terraform/
+      - name: Vulnerability scan with tfsec 
+        continue-on-error: true
+        run: tfsec terraform/
+
+
+
+
