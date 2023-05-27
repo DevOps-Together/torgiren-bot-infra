@@ -1,21 +1,17 @@
 #checkov:skip:CKV2_GHA_1:Comment
 name: DevOps-Together CI
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-    
+on: [ push, pull_request ]  
+
 permissions: read-all
 
 jobs:
   linter:
     runs-on: [ubuntu-22.04]
-    continue-on-error: true
+    #continue-on-error: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        with:
+        with: 
           fetch-depth: 0
       - name: Lint Code Base
         uses: github/super-linter@v4
@@ -29,6 +25,19 @@ jobs:
           VALIDATE_TERRAFORM_TERRASCAN: true
           VALIDATE_TERRAFORM_TFLINT: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - if: failure()
+        name: Cancalling parrallel jobs
+        uses: actions/github-script@v6
+        env: 
+          RUN_ID: ${{ github.run_id }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const runId = process.env.RUN_ID
+            const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
+            const resp = await github.rest.actions.cancelWorkflowRun({
+            owner,repo, runId
+            }) 
   scan:
     runs-on: [ubuntu-22.04]
     container:
@@ -46,4 +55,36 @@ jobs:
           directory: .
           soft_fail: true
           download_external_modules: true
+      - if: failure()
+        name: Cancalling parrallel jobs
+        uses: actions/github-script@v6
+        env: 
+          RUN_ID: ${{ github.run_id }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const runId = process.env.RUN_ID
+            const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
+            const resp = await github.rest.actions.cancelWorkflowRun({
+            owner,repo, runId
+            }) 
+
+  test:
+    runs-on: [ubuntu-22.04]
+    needs: [linter, scan]
+    steps:
+      - uses: hashicorp/setup-terraform@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Terraform test
+        id: terraform
+        run: |
+          terraform init terraform 
+          terraform validate -no-color terraform  
+          terraform plan -no-color terraform 
+      - name: Molecule (Ansible test)
+        id: molecule  
+        uses: gofrolist/molecule-action@v2
 
