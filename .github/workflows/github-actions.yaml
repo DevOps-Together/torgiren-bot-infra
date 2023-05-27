@@ -1,0 +1,72 @@
+#checkov:skip:CKV2_GHA_1:Comment
+name: DevOps-Together CI
+on: [ push, pull_request ]  
+
+permissions: read-all
+
+jobs:
+  linter:
+    permissions: write-all
+    runs-on: [ubuntu-22.04]
+    #continue-on-error: true
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+      - name: Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: master
+          ANSIBLE_DIRECTORY: ansible
+          VALIDATE_ANSIBLE: true
+          VALIDATE_GITHUB_ACTIONS: true
+          VALIDATE_TERRAFORM_FMT: true
+          VALIDATE_TERRAFORM_TERRASCAN: true
+          VALIDATE_TERRAFORM_TFLINT: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - if: failure()
+        name: Cancalling parrallel jobs
+        uses: andymckay/cancel-action@0.2
+  scan:
+    permissions: write-all
+    runs-on: [ubuntu-22.04]
+    container:
+      image: returntocorp/semgrep
+    if: (github.actor != 'dependabot[bot]')
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: semgrep
+        run: semgrep --config auto
+      - name: Run Checkov action
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          soft_fail: true
+          download_external_modules: true
+      - if: failure()
+        name: Cancalling parrallel jobs
+        uses: andymckay/cancel-action@0.2
+
+  test:
+    runs-on: [ubuntu-22.04]
+    needs: [linter, scan]
+    steps:
+      - uses: hashicorp/setup-terraform@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Terraform test
+        id: terraform
+        run: |
+          terraform init terraform 
+          terraform validate -no-color terraform  
+          terraform plan -no-color terraform 
+      - name: Molecule (Ansible test)
+        id: molecule  
+        uses: gofrolist/molecule-action@v2
+
