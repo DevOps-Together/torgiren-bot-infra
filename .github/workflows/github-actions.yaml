@@ -27,17 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - if: failure()
         name: Cancalling parrallel jobs
-        uses: actions/github-script@v6
-        env: 
-          RUN_ID: ${{ github.run_id }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          script: |
-            const runId = process.env.RUN_ID
-            const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
-            const resp = await github.rest.actions.cancelWorkflowRun({
-            owner,repo, runId
-            }) 
+        uses: andymckay/cancel-action@0.2
   scan:
     runs-on: [ubuntu-22.04]
     container:
@@ -57,17 +47,7 @@ jobs:
           download_external_modules: true
       - if: failure()
         name: Cancalling parrallel jobs
-        uses: actions/github-script@v6
-        env: 
-          RUN_ID: ${{ github.run_id }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          script: |
-            const runId = process.env.RUN_ID
-            const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
-            const resp = await github.rest.actions.cancelWorkflowRun({
-            owner,repo, runId
-            }) 
+        uses: andymckay/cancel-action@0.2
 
   test:
     runs-on: [ubuntu-22.04]
